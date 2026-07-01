@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { api } from '../lib/api'
 import type { Patient, VisitWithMedicines, ClinicSettings } from '../lib/types'
@@ -15,6 +15,23 @@ export function PrescriptionPrintPage(): JSX.Element {
   const [settings, setSettings] = useState<ClinicSettings | null>(null)
   const [printing, setPrinting] = useState(false)
   const [printError, setPrintError] = useState('')
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [scale, setScale] = useState(0.75)
+
+  useEffect(() => {
+    function updateScale(): void {
+      const c = containerRef.current
+      if (!c) return
+      const availH = c.clientHeight - 40
+      const availW = c.clientWidth - 40
+      // A4 at 96 dpi: 210mm ≈ 794px, 297mm ≈ 1123px
+      const s = Math.min(availH / 1123, availW / 794, 1)
+      setScale(s)
+    }
+    updateScale()
+    window.addEventListener('resize', updateScale)
+    return () => window.removeEventListener('resize', updateScale)
+  }, [visit, patient, settings])
 
   useEffect(() => {
     if (!visitId) return
@@ -54,8 +71,8 @@ export function PrescriptionPrintPage(): JSX.Element {
         <button onClick={() => navigate(`/visits/${visitId}`)} className="btn btn-ghost">← Back to Visit</button>
         {printError && <span style={{ color: '#fff', background: '#a32d2d', padding: '4px 10px', borderRadius: 6, fontSize: 12 }}>{printError}</span>}
       </div>
-
-      <div className="rx-page">
+      <div ref={containerRef} className="rx-preview-container">
+        <div className="rx-page" style={{ zoom: scale }}>
         <div className="rx-header">
           <div className="rx-doctor-block">
             <div className="rx-doctor-name">{settings.doctor_left_name}</div>
@@ -137,6 +154,7 @@ export function PrescriptionPrintPage(): JSX.Element {
             <div className="rx-footer-addr">{settings.footer_address}</div>
           </div>
         </div>
+      </div>
       </div>
     </>
   )

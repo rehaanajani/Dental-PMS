@@ -31,7 +31,7 @@
   font-family: 'Noto Sans Gujarati', 'Nirmala UI', 'Segoe UI', Arial, sans-serif;
   width: 210mm;
   min-height: 297mm;
-  margin: 68px auto 24px;
+  margin: auto;
   padding: 10mm 12mm;
   background: #fffdfa;
   font-size: 11pt;
@@ -39,6 +39,7 @@
   box-shadow: 0 0 20px rgba(0,0,0,0.1);
   position: relative;
   border: 3px solid var(--rx-accent);
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
 }
@@ -51,6 +52,19 @@
   pointer-events: none;
 }
 
+.rx-preview-container {
+  position: fixed;
+  top: 52px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background: #D8DEE8;
+}
+
 @media print {
   html, body {
     background: white !important;
@@ -58,11 +72,19 @@
     overflow: visible !important;
   }
   .no-print { display: none !important; }
+  .rx-preview-container {
+    position: static;
+    padding: 0;
+    background: none;
+    overflow: visible;
+    display: block;
+  }
   .rx-page {
     margin: 0;
     box-shadow: none;
     width: 100%;
     min-height: 0;
+    zoom: 1 !important;
   }
 }
 

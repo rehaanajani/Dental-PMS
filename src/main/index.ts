@@ -3,6 +3,7 @@ import path from 'path'
 import { initDb } from './database/db'
 import { runMigrations } from './database/migrations'
 import { registerAllIpc } from './ipc/index'
+import icon from '../../resources/icon.png?asset'
 
 let mainWindow: BrowserWindow | null = null
 
@@ -14,6 +15,7 @@ function createWindow(): void {
     height: 900,
     show: false,
     title: 'Darediya Dental Hub PMS',
+    icon,
     backgroundColor: '#D8DEE8',
     autoHideMenuBar: true,
     webPreferences: {

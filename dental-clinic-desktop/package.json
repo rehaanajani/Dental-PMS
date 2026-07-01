@@ -1,35 +1,35 @@
 {
   "name": "dental-clinic-desktop",
+  "productName": "Darediya Dental Hub PMS",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "main": "dist-electron/main.js",
+  "main": "./out/main/index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "oxlint",
-    "preview": "vite preview",
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "@fontsource/noto-sans-gujarati": "^5.2.7",
+    "archiver": "^8.0.0",
     "better-sqlite3": "^12.11.1",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-router-dom": "^7.18.0",
-    "zod": "^4.4.3"
+    "zod": "^3.24.0"
   },
   "devDependencies": {
+    "@types/archiver": "^8.0.0",
     "@types/better-sqlite3": "^7.6.13",
-    "@types/node": "^24.13.2",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.2",
-    "electron": "^42.5.0",
-    "electron-builder": "^26.15.3",
-    "oxlint": "^1.69.0",
-    "typescript": "~6.0.2",
-    "vite": "^8.1.0",
-    "vite-plugin-electron": "^1.1.0",
-    "vite-plugin-electron-renderer": "^1.0.0"
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "electron": "^33.3.1",
+    "electron-builder": "^25.1.0",
+    "electron-vite": "^3.1.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.3.0"
   }
 }

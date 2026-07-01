@@ -1,0 +1,262 @@
+/* ============================================================
+   PRESCRIPTION PRINT STYLESHEET
+   Fonts are bundled via @fontsource/noto-sans-gujarati (imported
+   in PrescriptionPrintPage.tsx) so Gujarati text renders crisply
+   and identically on any machine, with no internet or system
+   font dependency. Logo is the real artwork (src/renderer/src/assets/logo.png),
+   which already has "Smile Forever" baked into it — no separate caption text needed.
+   ============================================================ */
+
+:root {
+  --rx-accent: #C8173B;
+}
+
+.rx-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 52px;
+  background: #2FB6A3;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 12px;
+  color: white;
+  z-index: 100;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.rx-page {
+  font-family: 'Noto Sans Gujarati', 'Nirmala UI', 'Segoe UI', Arial, sans-serif;
+  width: 210mm;
+  min-height: 297mm;
+  margin: 68px auto 24px;
+  padding: 10mm 12mm;
+  background: #fffdfa;
+  font-size: 11pt;
+  color: #111;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  position: relative;
+  border: 3px solid var(--rx-accent);
+}
+
+.rx-page::before {
+  content: '';
+  position: absolute;
+  inset: 5mm;
+  border: 1px solid var(--rx-accent);
+  pointer-events: none;
+}
+
+@media print {
+  html, body {
+    background: white !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .no-print { display: none !important; }
+  .rx-page {
+    margin: 0;
+    box-shadow: none;
+    width: 100%;
+    min-height: 0;
+  }
+}
+
+.rx-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 4mm 6mm 0;
+}
+
+.rx-doctor-block {
+  font-size: 9pt;
+  line-height: 1.55;
+  max-width: 45mm;
+}
+
+.rx-doctor-right {
+  text-align: right;
+}
+
+.rx-doctor-name {
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: var(--rx-accent);
+  margin-bottom: 1mm;
+}
+
+.rx-doctor-qual {
+  font-weight: 700;
+  color: #222;
+}
+
+.rx-doctor-meta {
+  color: #222;
+}
+
+.rx-logo-block {
+  text-align: center;
+  padding-top: 1mm;
+}
+
+.rx-logo-svg {
+  height: 22mm;
+  width: auto;
+}
+
+.rx-clinic-name-row {
+  display: flex;
+  align-items: center;
+  gap: 5mm;
+  margin: 3mm 6mm 0;
+}
+
+.rx-rule {
+  flex: 1;
+  height: 0;
+  border-top: 1.5px solid var(--rx-accent);
+  position: relative;
+}
+
+.rx-rule::before,
+.rx-rule::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1.5px solid var(--rx-accent);
+}
+
+.rx-rule::before { top: 1.5mm; }
+.rx-rule::after { top: 3mm; }
+
+.rx-clinic-name-gu {
+  font-size: 20pt;
+  font-weight: 700;
+  color: var(--rx-accent);
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+}
+
+.rx-header-underline {
+  border-top: 1.5px solid var(--rx-accent);
+  margin: 4mm 0 0;
+}
+
+.rx-body {
+  padding: 6mm 4mm 2mm;
+  min-height: 150mm;
+}
+
+.rx-patient-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6mm;
+  margin-bottom: 5mm;
+  font-size: 9.5pt;
+}
+
+.rx-patient-field { display: flex; gap: 4px; }
+.rx-label { font-weight: 700; color: #333; }
+
+.rx-diagnosis {
+  margin-bottom: 4mm;
+  font-size: 9.5pt;
+  padding: 4px 8px;
+  background: #f9f9f9;
+  border-left: 3px solid var(--rx-accent);
+}
+
+.rx-medicines {
+  margin: 4mm 0;
+}
+
+.rx-symbol {
+  font-size: 22pt;
+  font-weight: 700;
+  color: var(--rx-accent);
+  margin-bottom: 8px;
+  font-style: italic;
+}
+
+.rx-med-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  align-items: flex-start;
+}
+
+.rx-med-num {
+  font-weight: 700;
+  min-width: 20px;
+  color: #333;
+  font-size: 9.5pt;
+}
+
+.rx-med-body { flex: 1; }
+
+.rx-med-name {
+  font-weight: 700;
+  font-size: 10pt;
+}
+
+.rx-med-sig {
+  font-size: 8.5pt;
+  color: #555;
+  margin-top: 1px;
+}
+
+.rx-advice, .rx-next-visit {
+  font-size: 9.5pt;
+  margin-top: 6px;
+  padding: 4px 8px;
+  border-left: 2px solid #2FB6A3;
+  background: #f0fdf9;
+}
+
+.rx-cash-note {
+  text-align: right;
+  font-size: 8.5pt;
+  font-weight: 700;
+  color: var(--rx-accent);
+  padding: 0 6mm;
+  margin-bottom: 2mm;
+}
+
+.rx-footer-line {
+  border-top: 1px solid var(--rx-accent);
+  margin: 0 6mm;
+}
+
+.rx-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 3mm 6mm 1mm;
+}
+
+.rx-footer-label {
+  font-size: 8pt;
+  color: #333;
+  line-height: 1.5;
+}
+
+.rx-footer-main {
+  text-align: right;
+}
+
+.rx-footer-title {
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--rx-accent);
+}
+
+.rx-footer-addr {
+  font-size: 8pt;
+  font-weight: 700;
+  color: var(--rx-accent);
+  margin-top: 1px;
+}

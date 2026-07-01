@@ -3,6 +3,7 @@ import { registerVisitIpc } from './visit.ipc'
 import { registerAppointmentIpc } from './appointment.ipc'
 import { registerSettingsIpc } from './settings.ipc'
 import { registerBackupIpc } from './backup.ipc'
+import { registerPrintIpc } from './print.ipc'
 
 export function registerAllIpc(): void {
   registerPatientIpc()
@@ -10,4 +11,5 @@ export function registerAllIpc(): void {
   registerAppointmentIpc()
   registerSettingsIpc()
   registerBackupIpc()
+  registerPrintIpc()
 }

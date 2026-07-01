@@ -13,6 +13,8 @@ export function PrescriptionPrintPage(): JSX.Element {
   const [visit, setVisit] = useState<VisitWithMedicines | null>(null)
   const [patient, setPatient] = useState<Patient | null>(null)
   const [settings, setSettings] = useState<ClinicSettings | null>(null)
+  const [printing, setPrinting] = useState(false)
+  const [printError, setPrintError] = useState('')
 
   useEffect(() => {
     if (!visitId) return
@@ -30,12 +32,27 @@ export function PrescriptionPrintPage(): JSX.Element {
     <div style={{ padding: 40, fontFamily: 'system-ui', color: '#333' }}>Loading prescription...</div>
   )
 
+  async function handlePrint(): Promise<void> {
+    setPrinting(true)
+    setPrintError('')
+    try {
+      await api.print.generateAndOpen()
+    } catch (err) {
+      setPrintError(err instanceof Error ? err.message : 'Failed to open PDF')
+    } finally {
+      setPrinting(false)
+    }
+  }
+
   return (
     <>
       <div className="rx-toolbar no-print">
         <span style={{ fontWeight: 600 }}>Prescription Preview</span>
-        <button onClick={() => window.print()} className="btn btn-primary">Print</button>
+        <button onClick={handlePrint} className="btn btn-primary" disabled={printing}>
+          {printing ? 'Preparing...' : 'Print'}
+        </button>
         <button onClick={() => navigate(`/visits/${visitId}`)} className="btn btn-ghost">← Back to Visit</button>
+        {printError && <span style={{ color: '#fff', background: '#a32d2d', padding: '4px 10px', borderRadius: 6, fontSize: 12 }}>{printError}</span>}
       </div>
 
       <div className="rx-page">

@@ -36,7 +36,10 @@ const api = {
   },
   settings: {
     get: () => ipcRenderer.invoke('settings:get'),
-    update: (data: unknown) => ipcRenderer.invoke('settings:update', data)
+    update: (settings: unknown) => ipcRenderer.invoke('settings:update', settings)
+  },
+  print: {
+    generateAndOpen: () => ipcRenderer.invoke('print:generateAndOpen')
   },
   backup: {
     create: () => ipcRenderer.invoke('backup:create'),

@@ -43,6 +43,9 @@ declare global {
         get: () => Promise<ClinicSettings | null>
         update: (data: Partial<ClinicSettings>) => Promise<ClinicSettings>
       }
+      print: {
+        generateAndOpen: () => Promise<{ success: boolean; path: string }>
+      }
       backup: {
         create: () => Promise<{ success: boolean; path?: string; error?: string }>
         getLast: () => Promise<{ id: string; backup_path: string; backup_date: string; status: string } | null>

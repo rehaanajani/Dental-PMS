@@ -97,10 +97,12 @@ export function getPatientById(id: string): Patient | null {
 
 export function searchPatients(query: string): Patient[] {
   const db = getDb()
-  const q = `%${query.trim()}%`
+  // Escape LIKE wildcards so "%" and "_" are searched for literally
+  const escaped = query.trim().replace(/[\\%_]/g, (c) => `\\${c}`)
+  const q = `%${escaped}%`
   return db.prepare(`
     SELECT * FROM patients
-    WHERE full_name LIKE ? OR mobile LIKE ? OR CAST(patient_number AS TEXT) LIKE ?
+    WHERE full_name LIKE ? ESCAPE '\\' OR mobile LIKE ? ESCAPE '\\' OR CAST(patient_number AS TEXT) LIKE ? ESCAPE '\\'
     ORDER BY patient_number DESC
     LIMIT 50
   `).all(q, q, q) as Patient[]

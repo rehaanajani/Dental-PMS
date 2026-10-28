@@ -13,7 +13,20 @@ export const AppointmentCreateSchema = z.object({
   notes: z.string().optional().default('')
 })
 
+// No defaults on update: a missing field must keep its current value, not reset
+export const AppointmentUpdateSchema = z.object({
+  patient_id: z.string().nullable(),
+  patient_name_snapshot: z.string().min(1),
+  mobile_snapshot: z.string(),
+  appointment_date: z.string().min(1),
+  appointment_time: z.string().min(1),
+  reason: z.string(),
+  status: z.enum(['Scheduled', 'Completed', 'Cancelled', 'No Show']),
+  notes: z.string()
+}).partial()
+
 export type AppointmentCreate = z.infer<typeof AppointmentCreateSchema>
+export type AppointmentUpdate = z.infer<typeof AppointmentUpdateSchema>
 
 export interface Appointment {
   id: string
@@ -55,16 +68,17 @@ export function createAppointment(data: AppointmentCreate): Appointment {
   return getAppointmentById(id)!
 }
 
-export function updateAppointment(id: string, data: Partial<AppointmentCreate>): Appointment {
+export function updateAppointment(id: string, data: AppointmentUpdate): Appointment {
   const db = getDb()
+  const validated = AppointmentUpdateSchema.parse(data)
   const now = new Date().toISOString()
   const current = getAppointmentById(id)
   if (!current) throw new Error(`Appointment ${id} not found`)
 
-  const merged = { ...current, ...data, updated_at: now }
+  const merged = { ...current, ...validated, updated_at: now }
   db.prepare(`
     UPDATE appointments SET
-      patient_name_snapshot = @patient_name_snapshot, mobile_snapshot = @mobile_snapshot,
+      patient_id = @patient_id, patient_name_snapshot = @patient_name_snapshot, mobile_snapshot = @mobile_snapshot,
       appointment_date = @appointment_date, appointment_time = @appointment_time,
       reason = @reason, status = @status, notes = @notes, updated_at = @updated_at
     WHERE id = @id

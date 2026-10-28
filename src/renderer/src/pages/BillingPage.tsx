@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { api } from '../lib/api'
 import type { VisitListItem } from '../lib/types'
 
-export function BillingPage(): JSX.Element {
+export function BillingPage(): React.JSX.Element {
   const navigate = useNavigate()
   const [visits, setVisits] = useState<VisitListItem[]>([])
   const [loading, setLoading] = useState(true)

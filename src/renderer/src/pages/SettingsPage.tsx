@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { api } from '../lib/api'
 import type { ClinicSettings } from '../lib/types'
 
-export function SettingsPage(): JSX.Element {
+export function SettingsPage(): React.JSX.Element {
   const [settings, setSettings] = useState<ClinicSettings | null>(null)
   const [form, setForm] = useState<Partial<ClinicSettings>>({})
   const [saving, setSaving] = useState(false)

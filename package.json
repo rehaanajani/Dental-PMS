@@ -12,6 +12,7 @@
     "dist": "npm run build && electron-builder",
     "dist:dir": "npm run build && electron-builder --dir",
     "preview": "electron-vite preview",
+    "typecheck": "tsc --noEmit",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {

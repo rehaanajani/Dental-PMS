@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { api } from '../lib/api'
 import { localDateString } from '../lib/date'
 
-export function NewAppointmentPage(): JSX.Element {
+export function NewAppointmentPage(): React.JSX.Element {
   const navigate = useNavigate()
   const today = localDateString()
   const [form, setForm] = useState({

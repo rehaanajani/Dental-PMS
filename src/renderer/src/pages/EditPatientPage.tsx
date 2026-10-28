@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../lib/api'
 import type { Patient } from '../lib/types'
 
-export function EditPatientPage(): JSX.Element {
+export function EditPatientPage(): React.JSX.Element {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const [form, setForm] = useState({ full_name: '', mobile: '', age: '', gender: '', address: '', medical_history: '', allergies: '', notes: '' })

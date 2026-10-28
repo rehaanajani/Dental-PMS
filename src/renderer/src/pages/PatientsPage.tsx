@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { api } from '../lib/api'
 import type { Patient } from '../lib/types'
 
-export function PatientsPage(): JSX.Element {
+export function PatientsPage(): React.JSX.Element {
   const navigate = useNavigate()
   const [patients, setPatients] = useState<Patient[]>([])
   const [query, setQuery] = useState('')

@@ -30,7 +30,7 @@ class ErrorBoundary extends Component<{ children: ReactNode }, State> {
   }
 }
 
-export default function App(): JSX.Element {
+export default function App(): React.JSX.Element {
   return (
     <ErrorBoundary>
       <RouterProvider router={router} />

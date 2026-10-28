@@ -4,7 +4,7 @@ import { api } from '../lib/api'
 import type { Patient, Appointment } from '../lib/types'
 import { localDateString } from '../lib/date'
 
-export function DashboardPage(): JSX.Element {
+export function DashboardPage(): React.JSX.Element {
   const navigate = useNavigate()
   const [recentPatients, setRecentPatients] = useState<Patient[]>([])
   const [todayAppts, setTodayAppts] = useState<Appointment[]>([])

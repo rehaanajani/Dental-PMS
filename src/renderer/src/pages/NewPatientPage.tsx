@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../lib/api'
 
-export function NewPatientPage(): JSX.Element {
+export function NewPatientPage(): React.JSX.Element {
   const navigate = useNavigate()
   const [form, setForm] = useState({
     full_name: '', mobile: '', age: '', gender: '',

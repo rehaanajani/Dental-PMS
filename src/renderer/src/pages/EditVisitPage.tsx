@@ -5,7 +5,7 @@ import type { Patient, MedicineItem } from '../lib/types'
 
 const EMPTY_MED: MedicineItem = { medicine_name: '', dosage: '', frequency: '', duration: '', instructions: '' }
 
-export function EditVisitPage(): JSX.Element {
+export function EditVisitPage(): React.JSX.Element {
   const navigate = useNavigate()
   const { visitId } = useParams<{ visitId: string }>()
   const [patient, setPatient] = useState<Patient | null>(null)

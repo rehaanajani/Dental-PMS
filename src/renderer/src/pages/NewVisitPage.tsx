@@ -6,7 +6,7 @@ import { localDateString } from '../lib/date'
 
 const EMPTY_MED: MedicineItem = { medicine_name: '', dosage: '', frequency: '', duration: '', instructions: '' }
 
-export function NewVisitPage(): JSX.Element {
+export function NewVisitPage(): React.JSX.Element {
   const navigate = useNavigate()
   const { id: patientId } = useParams<{ id: string }>()
   const [patient, setPatient] = useState<Patient | null>(null)

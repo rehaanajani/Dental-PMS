@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../lib/api'
 
-export function EditAppointmentPage(): JSX.Element {
+export function EditAppointmentPage(): React.JSX.Element {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const [form, setForm] = useState({

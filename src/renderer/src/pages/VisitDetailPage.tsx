@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../lib/api'
 import type { Patient, VisitWithMedicines } from '../lib/types'
 
-export function VisitDetailPage(): JSX.Element {
+export function VisitDetailPage(): React.JSX.Element {
   const { visitId } = useParams<{ visitId: string }>()
   const navigate = useNavigate()
   const [visit, setVisit] = useState<VisitWithMedicines | null>(null)

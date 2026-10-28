@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { api } from '../lib/api'
 
-export function BackupPage(): JSX.Element {
+export function BackupPage(): React.JSX.Element {
   const [lastBackup, setLastBackup] = useState<{ backup_path: string; backup_date: string; status: string } | null>(null)
   const [creating, setCreating] = useState(false)
   const [result, setResult] = useState('')

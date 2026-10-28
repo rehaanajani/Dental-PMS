@@ -7,7 +7,7 @@ import '@fontsource/noto-sans-gujarati/700.css'
 import '../styles/prescription.css'
 import logo from '../assets/logo.png'
 
-export function PrescriptionPrintPage(): JSX.Element {
+export function PrescriptionPrintPage(): React.JSX.Element {
   const { visitId } = useParams<{ visitId: string }>()
   const navigate = useNavigate()
   const [visit, setVisit] = useState<VisitWithMedicines | null>(null)

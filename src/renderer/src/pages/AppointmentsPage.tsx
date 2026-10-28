@@ -6,7 +6,7 @@ import { localDateString } from '../lib/date'
 
 type Tab = 'today' | 'upcoming' | 'all'
 
-export function AppointmentsPage(): JSX.Element {
+export function AppointmentsPage(): React.JSX.Element {
   const navigate = useNavigate()
   const [tab, setTab] = useState<Tab>('today')
   const [appointments, setAppointments] = useState<Appointment[]>([])

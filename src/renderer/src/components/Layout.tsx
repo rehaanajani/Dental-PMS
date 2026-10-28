@@ -12,7 +12,7 @@ const modules = [
   { path: '/settings', label: 'Settings', end: false },
 ]
 
-export function Layout(): JSX.Element {
+export function Layout(): React.JSX.Element {
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
 

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { api } from '../lib/api'
 import type { PrescriptionListItem } from '../lib/types'
 
-export function PrescriptionsPage(): JSX.Element {
+export function PrescriptionsPage(): React.JSX.Element {
   const navigate = useNavigate()
   const [items, setItems] = useState<PrescriptionListItem[]>([])
   const [loading, setLoading] = useState(true)

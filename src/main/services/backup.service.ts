@@ -2,6 +2,7 @@ import { app, dialog } from 'electron'
 import path from 'path'
 import fs from 'fs'
 import os from 'os'
+import crypto from 'crypto'
 
 import { getDb } from '../database/db'
 
@@ -15,7 +16,7 @@ export interface BackupRecord {
 
 export function getLastBackup(): BackupRecord | null {
   const db = getDb()
-  return db.prepare('SELECT * FROM backups ORDER BY backup_date DESC LIMIT 1').get() as BackupRecord | null
+  return db.prepare("SELECT * FROM backups WHERE status = 'Success' ORDER BY backup_date DESC LIMIT 1").get() as BackupRecord | null
 }
 
 export async function createBackup(): Promise<{ success: boolean; path?: string; error?: string }> {
@@ -42,32 +43,34 @@ export async function createBackup(): Promise<{ success: boolean; path?: string;
     return { success: false, error: `Could not snapshot database: ${(e as Error).message}` }
   }
 
-  return new Promise(async (resolve) => {
-    const archiverModule = await import('archiver')
-    const archiver = archiverModule.default || archiverModule
+  // archiver v8 is ESM-only and has no default export — use the ZipArchive class
+  const { ZipArchive } = await import('archiver')
+
+  return new Promise((resolve) => {
+    let settled = false
+    const finish = (result: { success: boolean; path?: string; error?: string }, notes: string): void => {
+      if (settled) return
+      settled = true
+      fs.rm(snapshotPath, { force: true }, () => {})
+      recordBackup(filePath, result.success ? 'Success' : 'Failed', notes)
+      resolve(result)
+    }
 
     const output = fs.createWriteStream(filePath)
-    const archive = archiver('zip', { zlib: { level: 9 } })
+    const archive = new ZipArchive({ zlib: { level: 9 } })
 
     output.on('close', () => {
-      // Record in DB
-      try {
-        const db = getDb()
-        const now = new Date().toISOString()
-        const crypto = require('crypto')
-        db.prepare(`
-          INSERT INTO backups (id, backup_path, backup_date, status, notes)
-          VALUES (?, ?, ?, ?, ?)
-        `).run(crypto.randomUUID(), filePath, now, 'Success', `${archive.pointer()} bytes`)
-      } catch (e) {
-        console.error('[Backup] Failed to record backup:', e)
-      }
-      fs.rm(snapshotPath, { force: true }, () => {})
-      resolve({ success: true, path: filePath })
+      finish({ success: true, path: filePath }, `${archive.pointer()} bytes`)
     })
 
-    archive.on('error', (err) => {
-      resolve({ success: false, error: err.message })
+    // Without these the promise never settles when the location is read-only or the disk is full
+    output.on('error', (err: Error) => {
+      archive.abort()
+      finish({ success: false, error: err.message }, err.message)
+    })
+    archive.on('error', (err: Error) => {
+      output.destroy()
+      finish({ success: false, error: err.message }, err.message)
     })
 
     archive.pipe(output)
@@ -85,4 +88,15 @@ export async function createBackup(): Promise<{ success: boolean; path?: string;
 
     archive.finalize()
   })
+}
+
+function recordBackup(backupPath: string, status: 'Success' | 'Failed', notes: string): void {
+  try {
+    getDb().prepare(`
+      INSERT INTO backups (id, backup_path, backup_date, status, notes)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(crypto.randomUUID(), backupPath, new Date().toISOString(), status, notes)
+  } catch (e) {
+    console.error('[Backup] Failed to record backup:', e)
+  }
 }

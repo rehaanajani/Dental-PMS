@@ -85,7 +85,9 @@ export function listAppointmentsByDate(date: string): Appointment[] {
 
 export function listUpcomingAppointments(): Appointment[] {
   const db = getDb()
-  const today = new Date().toISOString().split('T')[0]
+  // Local date, not UTC — the clinic's "today" starts at local midnight
+  const now = new Date()
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
   return db.prepare("SELECT * FROM appointments WHERE appointment_date >= ? AND status = 'Scheduled' ORDER BY appointment_date, appointment_time LIMIT 50").all(today) as Appointment[]
 }
 

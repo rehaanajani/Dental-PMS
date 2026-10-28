@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../lib/api'
 import type { Patient, Appointment } from '../lib/types'
+import { localDateString } from '../lib/date'
 
 export function DashboardPage(): JSX.Element {
   const navigate = useNavigate()
@@ -10,7 +11,7 @@ export function DashboardPage(): JSX.Element {
   const [searchQ, setSearchQ] = useState('')
   const [metrics, setMetrics] = useState({ patients: 0, totalPrescriptions: 0, pendingBalance: 0 })
 
-  const today = new Date().toISOString().split('T')[0]
+  const today = localDateString()
 
   useEffect(() => {
     api.patients.listRecent().then(setRecentPatients)

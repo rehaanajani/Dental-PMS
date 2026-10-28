@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../lib/api'
 import type { Appointment } from '../lib/types'
+import { localDateString } from '../lib/date'
 
 type Tab = 'today' | 'upcoming' | 'all'
 
@@ -11,7 +12,7 @@ export function AppointmentsPage(): JSX.Element {
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [loading, setLoading] = useState(true)
 
-  const today = new Date().toISOString().split('T')[0]
+  const today = localDateString()
 
   async function load(t: Tab): Promise<void> {
     setLoading(true)

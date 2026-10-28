@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../lib/api'
 import type { Patient, MedicineItem } from '../lib/types'
+import { localDateString } from '../lib/date'
 
 const EMPTY_MED: MedicineItem = { medicine_name: '', dosage: '', frequency: '', duration: '', instructions: '' }
 
@@ -11,7 +12,7 @@ export function NewVisitPage(): JSX.Element {
   const [patient, setPatient] = useState<Patient | null>(null)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
-  const today = new Date().toISOString().split('T')[0]
+  const today = localDateString()
 
   const [form, setForm] = useState({
     visit_date: today,

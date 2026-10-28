@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../lib/api'
+import { localDateString } from '../lib/date'
 
 export function NewAppointmentPage(): JSX.Element {
   const navigate = useNavigate()
-  const today = new Date().toISOString().split('T')[0]
+  const today = localDateString()
   const [form, setForm] = useState({
     patient_name_snapshot: '', mobile_snapshot: '', appointment_date: today,
     appointment_time: '09:00', reason: '', notes: ''

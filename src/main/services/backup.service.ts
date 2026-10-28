@@ -1,8 +1,9 @@
 import { app, dialog } from 'electron'
 import path from 'path'
 import fs from 'fs'
+import os from 'os'
 
-import { getDb, getDbPath } from '../database/db'
+import { getDb } from '../database/db'
 
 export interface BackupRecord {
   id: string
@@ -18,7 +19,6 @@ export function getLastBackup(): BackupRecord | null {
 }
 
 export async function createBackup(): Promise<{ success: boolean; path?: string; error?: string }> {
-  const dbPath = getDbPath()
 
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
   const fileName = `dental-pms-backup-${timestamp}.zip`
@@ -31,6 +31,15 @@ export async function createBackup(): Promise<{ success: boolean; path?: string;
 
   if (canceled || !filePath) {
     return { success: false, error: 'Cancelled' }
+  }
+
+  // The DB runs in WAL mode, so clinic.db alone may be missing recent writes
+  // that still sit in clinic.db-wal. db.backup() writes a consistent snapshot.
+  const snapshotPath = path.join(os.tmpdir(), `dental-pms-snapshot-${Date.now()}.db`)
+  try {
+    await getDb().backup(snapshotPath)
+  } catch (e) {
+    return { success: false, error: `Could not snapshot database: ${(e as Error).message}` }
   }
 
   return new Promise(async (resolve) => {
@@ -53,6 +62,7 @@ export async function createBackup(): Promise<{ success: boolean; path?: string;
       } catch (e) {
         console.error('[Backup] Failed to record backup:', e)
       }
+      fs.rm(snapshotPath, { force: true }, () => {})
       resolve({ success: true, path: filePath })
     })
 
@@ -63,7 +73,7 @@ export async function createBackup(): Promise<{ success: boolean; path?: string;
     archive.pipe(output)
 
     // Add database file
-    archive.file(dbPath, { name: 'data/clinic.db' })
+    archive.file(snapshotPath, { name: 'data/clinic.db' })
 
     // Add metadata
     const meta = JSON.stringify({

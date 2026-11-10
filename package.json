@@ -3,6 +3,7 @@
   "productName": "Darediya Dental Hub PMS",
   "version": "1.0.0",
   "description": "Offline patient records, appointments, and prescriptions for Darediya Dental Hub",
+  "license": "MIT",
   "author": "Darediya Dental Hub",
   "private": true,
   "main": "./out/main/index.js",
